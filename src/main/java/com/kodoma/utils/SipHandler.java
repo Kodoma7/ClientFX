@@ -1,9 +1,9 @@
-package com.kodoma;
+package com.kodoma.utils;
 
 import java.util.Arrays;
 
 /**
- * Handler of a SIP messages.
+ * Handler of SIP messages.
  * Created on 30.09.2018.
  * @author Kodoma.
  */
