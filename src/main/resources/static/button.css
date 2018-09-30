@@ -1,0 +1,7 @@
+.button {
+    -fx-background-color: linear-gradient(#e5f828, #59784C);
+}
+
+.button:pressed {
+    -fx-background-color: rgba(115, 128, 19, 0.67);
+}
