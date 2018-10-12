@@ -11,7 +11,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         final Parent root = FXMLLoader.load(getClass().getResource("/sample.fxml"));
-        final Scene scene = new Scene(root, 1000, 690);
+        final Scene scene = new Scene(root, 1000, 689);
+
+        root.getStylesheets().add(getClass().getResource("/static/fonts/pattaya.ttf").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/static/fonts/pattaya.ttf").toExternalForm());
 
         primaryStage.setTitle("ClientFX");
         primaryStage.setScene(scene);

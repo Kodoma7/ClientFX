@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Pattaya';
+    src: url('../fonts/pattaya.ttf');
+}
+
+.text {
+    -fx-font-family: "Pattaya";
+    -fx-font-size: 28;
+}

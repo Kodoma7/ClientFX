@@ -1,5 +1,7 @@
 .button {
     -fx-background-color: linear-gradient(#e5f828, #59784C);
+    -fx-font-size: 24;
+    -fx-font-family: Pattaya;
 }
 
 .button:pressed {

@@ -18,18 +18,22 @@ public class Controller {
     private final Model model = Model.getInstance();
 
     public void pressButton(ActionEvent event) {
-        model.setSdp(textArea.getText());
+        final String text = textArea.getText();
+        model.setSdp(text);
+        System.out.println(text);
     }
 
     public void switchOn() {
         switchOn.setVisible(true);
         switchOff.setVisible(false);
         model.setEnabled(true);
+        System.out.println("turn on");
     }
 
     public void switchOff() {
         switchOn.setVisible(false);
         switchOff.setVisible(true);
         model.setEnabled(false);
+        System.out.println("turn off");
     }
 }
