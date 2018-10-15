@@ -1,5 +1,8 @@
 package com.kodoma.parser;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.kodoma.parser.util.Util;
+import com.kodoma.parser.values.MediaValue;
 import com.kodoma.parser.values.RtpCodec;
 
 import java.util.List;
@@ -23,15 +26,7 @@ public class SdpEntity {
 
     private String userAddress;
 
-    private String mediaType;
-
-    private String mediaPort;
-
-    private String mediaProtocol;
-
-    private String fmtList;
-
-    private List<RtpCodec> rtpMap;
+    private MediaValue mAudio;
 
     public String getUserName() {
         return userName;
@@ -87,65 +82,27 @@ public class SdpEntity {
         return this;
     }
 
-    public String getMediaType() {
-        return mediaType;
+    public MediaValue getmAudio() {
+        return mAudio;
     }
 
-    public SdpEntity setMediaType(String mediaType) {
-        this.mediaType = mediaType;
+    public SdpEntity setmAudio(MediaValue mAudio) {
+        this.mAudio = mAudio;
         return this;
     }
 
-    public String getMediaPort() {
-        return mediaPort;
-    }
-
-    public SdpEntity setMediaPort(String mediaPort) {
-        this.mediaPort = mediaPort;
-        return this;
-    }
-
-    public String getMediaProtocol() {
-        return mediaProtocol;
-    }
-
-    public SdpEntity setMediaProtocol(String mediaProtocol) {
-        this.mediaProtocol = mediaProtocol;
-        return this;
-    }
-
-    public String getFmtList() {
-        return fmtList;
-    }
-
-    public SdpEntity setFmtList(String fmtList) {
-        this.fmtList = fmtList;
-        return this;
-    }
-
-    public List<RtpCodec> getRtpMap() {
-        return rtpMap;
-    }
-
-    public SdpEntity setRtpMap(List<RtpCodec> rtpMap) {
-        this.rtpMap = rtpMap;
+    public SdpEntity setAudioRtpMap(List<RtpCodec> rtpMap) {
+        this.mAudio.setRtpMap(rtpMap);
         return this;
     }
 
     @Override
     public String toString() {
-        return "SdpEntity{" +
-               "userName='" + userName + '\'' +
-               ", sessionId='" + sessionId + '\'' +
-               ", sdpSessionTimes='" + sdpSessionTimes + '\'' +
-               ", networkType='" + networkType + '\'' +
-               ", ipType='" + ipType + '\'' +
-               ", userAddress='" + userAddress + '\'' +
-               ", mediaType='" + mediaType + '\'' +
-               ", mediaPort='" + mediaPort + '\'' +
-               ", mediaProtocol='" + mediaProtocol + '\'' +
-               ", fmtList='" + fmtList + '\'' +
-               ", rtpMap=" + rtpMap +
-               '}';
+        try {
+            return Util.MAPPER.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

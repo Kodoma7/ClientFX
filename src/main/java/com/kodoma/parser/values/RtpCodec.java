@@ -9,7 +9,10 @@ import static com.kodoma.parser.util.Util.getAttribute;
  * Created on 13.10.2018.
  * @author Kodoma.
  */
-public class RtpCodec implements SdpValue {
+public class RtpCodec extends SdpValue {
+
+    private static final Pattern ENCODING_NAME_PATTERN = Pattern.compile(".*?\\s(.*?)/\\d");
+    private static final Pattern CLOCK_RATE_PATTERN = Pattern.compile(".*?\\s.*?/(.*?)$");
 
     private String payloadType;
 
@@ -19,15 +22,10 @@ public class RtpCodec implements SdpValue {
 
     @Override
     public SdpValue fill(final String raw) {
-        this.payloadType = getAttribute(raw, Pattern.compile("(.*?)\\s"));
-        this.encodingName = getAttribute(raw, Pattern.compile(".*?\\s(.*?)/\\d"));
-        this.clockRate = getAttribute(raw, Pattern.compile(".*?\\s.*?/(.*?)$"));
+        this.payloadType = getAttribute(raw, FIRST_VALUE_PATTERN);
+        this.encodingName = getAttribute(raw, ENCODING_NAME_PATTERN);
+        this.clockRate = getAttribute(raw, CLOCK_RATE_PATTERN);
         return this;
-    }
-
-    @Override
-    public SdpValue clone() throws CloneNotSupportedException {
-        return (SdpValue)super.clone();
     }
 
     public String getPayloadType() {
@@ -55,14 +53,5 @@ public class RtpCodec implements SdpValue {
     public RtpCodec setClockRate(String clockRate) {
         this.clockRate = clockRate;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return "RtpCodec{" +
-               "payloadType='" + payloadType + '\'' +
-               ", encodingName='" + encodingName + '\'' +
-               ", clockRate='" + clockRate + '\'' +
-               '}';
     }
 }
