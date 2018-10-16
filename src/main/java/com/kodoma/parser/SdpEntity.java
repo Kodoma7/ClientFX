@@ -18,7 +18,7 @@ public class SdpEntity {
 
     private String sessionId;
 
-    private String sdpSessionTimes;
+    private String version;
 
     private String networkType;
 
@@ -26,7 +26,9 @@ public class SdpEntity {
 
     private String userAddress;
 
-    private MediaValue mAudio;
+    private MediaValue audio;
+
+    private MediaValue video;
 
     public String getUserName() {
         return userName;
@@ -46,12 +48,12 @@ public class SdpEntity {
         return this;
     }
 
-    public String getSdpSessionTimes() {
-        return sdpSessionTimes;
+    public String getVersion() {
+        return version;
     }
 
-    public SdpEntity setSdpSessionTimes(String sdpSessionTimes) {
-        this.sdpSessionTimes = sdpSessionTimes;
+    public SdpEntity setVersion(String version) {
+        this.version = version;
         return this;
     }
 
@@ -82,17 +84,31 @@ public class SdpEntity {
         return this;
     }
 
-    public MediaValue getmAudio() {
-        return mAudio;
+    public MediaValue getAudio() {
+        return audio;
     }
 
-    public SdpEntity setmAudio(MediaValue mAudio) {
-        this.mAudio = mAudio;
+    public SdpEntity setAudio(MediaValue audio) {
+        this.audio = audio;
         return this;
     }
 
     public SdpEntity setAudioRtpMap(List<RtpCodec> rtpMap) {
-        this.mAudio.setRtpMap(rtpMap);
+        this.audio.setRtpMap(rtpMap);
+        return this;
+    }
+
+    public MediaValue getVideo() {
+        return video;
+    }
+
+    public SdpEntity setVideo(MediaValue video) {
+        this.video = video;
+        return this;
+    }
+
+    public SdpEntity setVideoRtpMap(List<RtpCodec> rtpMap) {
+        this.video.setRtpMap(rtpMap);
         return this;
     }
 

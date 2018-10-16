@@ -19,8 +19,9 @@ public class SipParserTest {
                                       + "a=rtpmap:0 PCMU/8000\n"
                                       + "a=rtpmap:8 PCMA/8000\n"
                                       + "a=rtpmap:97 iLBC/8000\n"
-                                      + "m=video 51372 RTP/AVP 31\n"
-                                      + "a=rtpmap:31 H261/90000";
+                                      + "m=video 51372 RTP/AVP 31 32\n"
+                                      + "a=rtpmap:31 H261/90000\n"
+                                      + "a=rtpmap:32 MPV/90000";
 
     @Test
     public void test() {

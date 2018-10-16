@@ -3,6 +3,7 @@ package com.kodoma.parser.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.Lists;
+import com.kodoma.parser.pattern.Patterns;
 import com.kodoma.parser.values.SdpValue;
 import org.apache.log4j.Logger;
 
@@ -22,51 +23,59 @@ public class Util {
     private static final Logger LOG = Logger.getLogger(Util.class);
     public static final ObjectWriter MAPPER = new ObjectMapper().writerWithDefaultPrettyPrinter();
 
-    public static String getAttribute(final String sdp, final Pattern p) {
-        final Matcher m = p.matcher(sdp);
-        Exception exception = null;
+    public static String getAttribute(final String sdp, final Patterns p) {
+        final Matcher m = p.getPattern().matcher(sdp);
+        Exception ex = null;
 
         if (m.find()) {
             try {
                 return m.group(1);
             } catch (IllegalStateException | IndexOutOfBoundsException e) {
-                exception = e;
+                ex = e;
             }
         }
-        LOG.error("Cannot find attribute " + (exception != null ? exception : ""));
+        logError(ex, p);
         return null;
     }
 
-    public static <V> V getAttribute(final String sdp, final Pattern p, final SdpValue value) {
-        final Matcher m = p.matcher(sdp);
-        Exception exception = null;
+    public static <V extends SdpValue> V getAttribute(final String sdp, final Patterns p, final SdpValue value) {
+        final Matcher m = p.getPattern().matcher(sdp);
+        Exception ex = null;
 
         if (m.find()) {
             try {
                 return (V)value.fill(m.group(1));
             } catch (IllegalStateException | IndexOutOfBoundsException e) {
-                exception = e;
+                ex = e;
             }
         }
-        LOG.error("Cannot find attribute " + (exception != null ? exception : ""));
+        logError(ex, p);
         return null;
     }
 
-    public static <V> List<V> getAttributes(final String sdp, final Pattern p, final SdpValue value) {
-        final Matcher m = p.matcher(sdp);
+    public static <V extends SdpValue> List<V> getAttributes(final String sdp, final Patterns p, final SdpValue value) {
+        final Matcher m = p.getPattern().matcher(sdp);
         final List<SdpValue> values = Lists.newArrayList();
+        Exception ex = null;
 
         while (m.find()) {
             try {
                 values.add(value.clone().fill(m.group(2)));
             } catch (IllegalStateException | IndexOutOfBoundsException | CloneNotSupportedException e) {
-                LOG.error("Cannot find attribute " + e);
+                ex = e;
             }
+        }
+        if (values.isEmpty()) {
+            logError(ex, p);
         }
         return (List<V>)values;
     }
 
-    public static List<String> getAttributes(final String sdp, final Pattern p) {
+    public static List<String> getAttributes(final String sdp, final Patterns p) {
         return Arrays.asList(Objects.requireNonNull(getAttribute(sdp, p)).split(" "));
+    }
+
+    private static void logError(final Exception e, final Patterns pattern) {
+        LOG.error("Cannot find attribute '" + pattern.getName() + "' " + (e != null ? e : ""));
     }
 }

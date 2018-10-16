@@ -1,7 +1,8 @@
 package com.kodoma.parser.values;
 
+import com.kodoma.parser.pattern.Patterns;
+
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.kodoma.parser.util.Util.getAttribute;
@@ -13,8 +14,6 @@ import static com.kodoma.parser.util.Util.getAttributes;
  * @author Kodoma.
  */
 public class MediaValue extends SdpValue {
-
-    private static final Pattern CODEC_NUMBERS_PATTERN = Pattern.compile(".*?\\s.*?\\s(.*)");
 
     private String type;
 
@@ -32,9 +31,9 @@ public class MediaValue extends SdpValue {
 
     @Override
     public SdpValue fill(String raw) {
-        this.port = getAttribute(raw, FIRST_VALUE_PATTERN);
-        this.protocol = getAttribute(raw, SECOND_VALUE_PATTERN);
-        this.codecNumbers = getAttributes(raw, CODEC_NUMBERS_PATTERN);
+        this.port = getAttribute(raw, Patterns.PORT_PATTERN);
+        this.protocol = getAttribute(raw, Patterns.PROTOCOL_PATTERN);
+        this.codecNumbers = getAttributes(raw, Patterns.CODEC_NUMBERS_PATTERN);
         return this;
     }
 

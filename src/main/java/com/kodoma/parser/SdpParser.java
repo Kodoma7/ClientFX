@@ -1,13 +1,8 @@
 package com.kodoma.parser;
 
-import com.google.common.collect.Lists;
+import com.kodoma.parser.pattern.Patterns;
 import com.kodoma.parser.values.MediaValue;
 import com.kodoma.parser.values.RtpCodec;
-import org.apache.log4j.Logger;
-
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.kodoma.parser.util.Util.getAttribute;
 import static com.kodoma.parser.util.Util.getAttributes;
@@ -18,27 +13,17 @@ import static com.kodoma.parser.util.Util.getAttributes;
  * @author Kodoma.
  */
 public class SdpParser {
-    private static final Logger LOG = Logger.getLogger(SdpParser.class);
-
-    private static final Pattern USER_NAME_PATTERN = Pattern.compile("o=(.*?)\\s");
-    private static final Pattern SESSION_ID_PATTERN = Pattern.compile("o=.*?\\s(.*?)\\s");
-    private static final Pattern SDP_SESSION_TIMES_PATTERN = Pattern.compile("o=.*?\\s.*?\\s(.*?)\\s");
-    private static final Pattern NETWORK_TYPE_PATTERN = Pattern.compile("o=.*?\\s.*?\\s.*?\\s(.*?)\\s");
-    private static final Pattern IP_TYPE_PATTERN = Pattern.compile("o=.*?\\s.*?\\s.*?\\s.*?\\s(.*?)\\s");
-    private static final Pattern USER_ADDRESS_PATTERN = Pattern.compile("o=.*?\\s.*?\\s.*?\\s.*?\\s.*?\\s(.*?)\\s");
-
-    private static final Pattern M_AUDIO_PATTERN = Pattern.compile("m=audio\\s(.*)");
-
-    private static final Pattern RTP_PAYLOAD_TYPE_PATTERN = Pattern.compile("(a=rtpmap:)(.*)");
 
     public static SdpEntity parse(final String sdp) {
-        return new SdpEntity().setUserName(getAttribute(sdp, USER_NAME_PATTERN))
-                              .setSessionId(getAttribute(sdp, SESSION_ID_PATTERN))
-                              .setSdpSessionTimes(getAttribute(sdp, SDP_SESSION_TIMES_PATTERN))
-                              .setNetworkType(getAttribute(sdp, NETWORK_TYPE_PATTERN))
-                              .setIpType(getAttribute(sdp, IP_TYPE_PATTERN))
-                              .setUserAddress(getAttribute(sdp, USER_ADDRESS_PATTERN))
-                              .setmAudio(getAttribute(sdp, M_AUDIO_PATTERN, new MediaValue("audio")))
-                              .setAudioRtpMap(getAttributes(sdp, RTP_PAYLOAD_TYPE_PATTERN, new RtpCodec()));
+        return new SdpEntity().setUserName(getAttribute(sdp, Patterns.USER_NAME_PATTERN))
+                              .setSessionId(getAttribute(sdp, Patterns.SESSION_ID_PATTERN))
+                              .setVersion(getAttribute(sdp, Patterns.VERSION))
+                              .setNetworkType(getAttribute(sdp, Patterns.NETWORK_TYPE_PATTERN))
+                              .setIpType(getAttribute(sdp, Patterns.IP_TYPE_PATTERN))
+                              .setUserAddress(getAttribute(sdp, Patterns.USER_ADDRESS_PATTERN))
+                              .setAudio(getAttribute(sdp, Patterns.AUDIO_PATTERN, new MediaValue("audio")))
+                              .setAudioRtpMap(getAttributes(sdp, Patterns.RTP_PAYLOAD_TYPE_PATTERN, new RtpCodec()))
+                              .setVideo(getAttribute(sdp, Patterns.VIDEO_PATTERN, new MediaValue("video")))
+                              .setVideoRtpMap(getAttributes(sdp, Patterns.RTP_PAYLOAD_TYPE_PATTERN, new RtpCodec()));
     }
 }

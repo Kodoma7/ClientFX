@@ -1,6 +1,6 @@
 package com.kodoma.parser.values;
 
-import java.util.regex.Pattern;
+import com.kodoma.parser.pattern.Patterns;
 
 import static com.kodoma.parser.util.Util.getAttribute;
 
@@ -11,9 +11,6 @@ import static com.kodoma.parser.util.Util.getAttribute;
  */
 public class RtpCodec extends SdpValue {
 
-    private static final Pattern ENCODING_NAME_PATTERN = Pattern.compile(".*?\\s(.*?)/\\d");
-    private static final Pattern CLOCK_RATE_PATTERN = Pattern.compile(".*?\\s.*?/(.*?)$");
-
     private String payloadType;
 
     private String encodingName;
@@ -22,9 +19,9 @@ public class RtpCodec extends SdpValue {
 
     @Override
     public SdpValue fill(final String raw) {
-        this.payloadType = getAttribute(raw, FIRST_VALUE_PATTERN);
-        this.encodingName = getAttribute(raw, ENCODING_NAME_PATTERN);
-        this.clockRate = getAttribute(raw, CLOCK_RATE_PATTERN);
+        this.payloadType = getAttribute(raw, Patterns.PAYLOAD_TYPE_PATTERN);
+        this.encodingName = getAttribute(raw, Patterns.ENCODING_NAME_PATTERN);
+        this.clockRate = getAttribute(raw, Patterns.CLOCK_RATE_PATTERN);
         return this;
     }
 
