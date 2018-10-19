@@ -1,6 +1,6 @@
 package com.kodoma.parser.values;
 
-import com.kodoma.parser.pattern.Patterns;
+import com.kodoma.parser.patterns.Patterns;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +30,7 @@ public class MediaValue extends SdpValue {
     }
 
     @Override
-    public SdpValue fill(String raw) {
+    public SdpValue fill(final String raw, final String attributeName) {
         this.port = getAttribute(raw, Patterns.PORT_PATTERN);
         this.protocol = getAttribute(raw, Patterns.PROTOCOL_PATTERN);
         this.codecNumbers = getAttributes(raw, Patterns.CODEC_NUMBERS_PATTERN);

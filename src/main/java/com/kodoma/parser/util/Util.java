@@ -3,15 +3,15 @@ package com.kodoma.parser.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.Lists;
-import com.kodoma.parser.pattern.Patterns;
+import com.kodoma.parser.patterns.Patterns;
 import com.kodoma.parser.values.SdpValue;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Util class.
@@ -44,7 +44,7 @@ public class Util {
 
         if (m.find()) {
             try {
-                return (V)value.fill(m.group(1));
+                return (V)value.fill(m.group(1), null);
             } catch (IllegalStateException | IndexOutOfBoundsException e) {
                 ex = e;
             }
@@ -60,7 +60,7 @@ public class Util {
 
         while (m.find()) {
             try {
-                values.add(value.clone().fill(m.group(2)));
+                values.add(value.clone().fill(m.group(2), m.group(1)));
             } catch (IllegalStateException | IndexOutOfBoundsException | CloneNotSupportedException e) {
                 ex = e;
             }
@@ -69,6 +69,21 @@ public class Util {
             logError(ex, p);
         }
         return (List<V>)values;
+    }
+
+    public static List<String> testGetAttributes(final String sdp, final Patterns p) {
+        final Matcher m = p.getPattern().matcher(sdp);
+        final List<String> list = Lists.newArrayList();
+        Exception ex = null;
+
+        while (m.find()) {
+            try {
+                list.add(m.group(2));
+            } catch (IllegalStateException | IndexOutOfBoundsException e) {
+                ex = e;
+            }
+        }
+        return list;
     }
 
     public static List<String> getAttributes(final String sdp, final Patterns p) {

@@ -1,4 +1,4 @@
-package com.kodoma.parser.pattern;
+package com.kodoma.parser.patterns;
 
 import java.util.regex.Pattern;
 
@@ -25,7 +25,19 @@ public enum Patterns {
     CLOCK_RATE_PATTERN(Pattern.compile(".*?\\s.*?/(.*?)$"), "clock_rate"),
     PORT_PATTERN(Pattern.compile("(.*?)\\s"), "port"),
     PROTOCOL_PATTERN(Pattern.compile(".*?\\s(.*?)\\s"), "protocol"),
-    CODEC_NUMBERS_PATTERN(Pattern.compile(".*?\\s.*?\\s(.*)"), "codec_numbers");
+    CODEC_NUMBERS_PATTERN(Pattern.compile(".*?\\s.*?\\s(.*)"), "codec_numbers"),
+
+    CANDIDATE_PATTERN(Pattern.compile("(a=candidate:|a=x-candidate-ipv6:)(.*)"), "candidate"),
+    FOUNDATION_PATTERN(Pattern.compile("(.*?)\\s"), "foundation"),
+    COMPONENT_ID_PATTERN(Pattern.compile(".*?\\s(.*?)\\s"), "component_id"),
+    CANDIDATE_PROTOCOL_PATTERN(Pattern.compile(".*?\\s.*?\\s(.*?)\\s"), "candidate_protocol"),
+    PRIORITY_PATTERN(Pattern.compile(".*?\\s.*?\\s.*?\\s(.*?)\\s"), "priority"),
+    CANDIDATE_IP_PATTERN(Pattern.compile(".*?\\s.*?\\s.*?\\s.*?\\s(.*?)\\s"), "candidate_ip"),
+    CANDIDATE_PORT_PATTERN(Pattern.compile(".*?\\s.*?\\s.*?\\s.*?\\s.*?\\s(.*?)\\s"), "candidate_port"),
+    CANDIDATE_TYPE_PATTERN(Pattern.compile(".*?\\s.*?\\s.*?\\s.*?\\s.*?\\s.*?\\s(.*?\\s.*?)($|\\s)"), "candidate_type"),
+    CANDIDATE_IP_PORT_PATTERN(Pattern.compile("typ\\s.*?\\s(.*?\\s.*?\\s.*?\\s.*?)$"), "candidate_id_port"),
+
+    ATTRIBUTE_A_PATTERN(Pattern.compile("a=(.*?):"), "attribute_a");
 
     private Pattern pattern;
 

@@ -1,6 +1,6 @@
 package com.kodoma.parser.values;
 
-import com.kodoma.parser.pattern.Patterns;
+import com.kodoma.parser.patterns.Patterns;
 
 import static com.kodoma.parser.util.Util.getAttribute;
 
@@ -18,7 +18,7 @@ public class RtpCodec extends SdpValue {
     private String clockRate;
 
     @Override
-    public SdpValue fill(final String raw) {
+    public SdpValue fill(final String raw, final String attributeName) {
         this.payloadType = getAttribute(raw, Patterns.PAYLOAD_TYPE_PATTERN);
         this.encodingName = getAttribute(raw, Patterns.ENCODING_NAME_PATTERN);
         this.clockRate = getAttribute(raw, Patterns.CLOCK_RATE_PATTERN);

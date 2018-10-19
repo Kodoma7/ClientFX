@@ -2,6 +2,7 @@ package com.kodoma.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kodoma.parser.util.Util;
+import com.kodoma.parser.values.Candidate;
 import com.kodoma.parser.values.MediaValue;
 import com.kodoma.parser.values.RtpCodec;
 
@@ -29,6 +30,8 @@ public class SdpEntity {
     private MediaValue audio;
 
     private MediaValue video;
+
+    private List<Candidate> candidates;
 
     public String getUserName() {
         return userName;
@@ -94,7 +97,9 @@ public class SdpEntity {
     }
 
     public SdpEntity setAudioRtpMap(List<RtpCodec> rtpMap) {
-        this.audio.setRtpMap(rtpMap);
+        if (audio != null) {
+            this.audio.setRtpMap(rtpMap);
+        }
         return this;
     }
 
@@ -108,7 +113,18 @@ public class SdpEntity {
     }
 
     public SdpEntity setVideoRtpMap(List<RtpCodec> rtpMap) {
-        this.video.setRtpMap(rtpMap);
+        if (video != null) {
+            this.video.setRtpMap(rtpMap);
+        }
+        return this;
+    }
+
+    public List<Candidate> getCandidates() {
+        return candidates;
+    }
+
+    public SdpEntity setCandidates(List<Candidate> candidates) {
+        this.candidates = candidates;
         return this;
     }
 

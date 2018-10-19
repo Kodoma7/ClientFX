@@ -1,8 +1,12 @@
 package com.kodoma.parser;
 
-import com.kodoma.parser.pattern.Patterns;
+import com.kodoma.parser.patterns.Patterns;
+import com.kodoma.parser.values.Candidate;
 import com.kodoma.parser.values.MediaValue;
 import com.kodoma.parser.values.RtpCodec;
+
+import javax.sdp.*;
+import java.util.Vector;
 
 import static com.kodoma.parser.util.Util.getAttribute;
 import static com.kodoma.parser.util.Util.getAttributes;
@@ -14,7 +18,7 @@ import static com.kodoma.parser.util.Util.getAttributes;
  */
 public class SdpParser {
 
-    public static SdpEntity parse(final String sdp) {
+    public static SdpEntity parse(final String sdp) throws SdpException {
         return new SdpEntity().setUserName(getAttribute(sdp, Patterns.USER_NAME_PATTERN))
                               .setSessionId(getAttribute(sdp, Patterns.SESSION_ID_PATTERN))
                               .setVersion(getAttribute(sdp, Patterns.VERSION))
@@ -24,6 +28,7 @@ public class SdpParser {
                               .setAudio(getAttribute(sdp, Patterns.AUDIO_PATTERN, new MediaValue("audio")))
                               .setAudioRtpMap(getAttributes(sdp, Patterns.RTP_PAYLOAD_TYPE_PATTERN, new RtpCodec()))
                               .setVideo(getAttribute(sdp, Patterns.VIDEO_PATTERN, new MediaValue("video")))
-                              .setVideoRtpMap(getAttributes(sdp, Patterns.RTP_PAYLOAD_TYPE_PATTERN, new RtpCodec()));
+                              .setVideoRtpMap(getAttributes(sdp, Patterns.RTP_PAYLOAD_TYPE_PATTERN, new RtpCodec()))
+                              .setCandidates(getAttributes(sdp, Patterns.CANDIDATE_PATTERN, new Candidate()));
     }
 }

@@ -10,7 +10,7 @@ import com.kodoma.parser.util.Util;
  */
 public abstract class SdpValue implements Cloneable {
 
-    public abstract SdpValue fill(final String raw);
+    public abstract SdpValue fill(final String raw, final String attributeName);
 
     @Override
     public SdpValue clone() throws CloneNotSupportedException {
