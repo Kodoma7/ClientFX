@@ -5,7 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 
-public class Controller {
+import java.util.Observable;
+import java.util.Observer;
+
+public class Controller implements Observer {
 
     @FXML private TextArea textArea;
 
@@ -17,23 +20,29 @@ public class Controller {
 
     private final Model model = Model.getInstance();
 
+    public Controller() {
+        model.addObserver(this);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        resultText.setText(resultText.getText().concat(arg.toString() + "\n"));
+    }
+
     public void pressButton(ActionEvent event) {
         final String text = textArea.getText();
         model.setSdp(text);
-        System.out.println(text);
     }
 
     public void switchOn() {
         switchOn.setVisible(true);
         switchOff.setVisible(false);
         model.setEnabled(true);
-        System.out.println("turn on");
     }
 
     public void switchOff() {
         switchOn.setVisible(false);
         switchOff.setVisible(true);
         model.setEnabled(false);
-        System.out.println("turn off");
     }
 }

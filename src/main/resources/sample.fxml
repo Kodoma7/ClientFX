@@ -48,7 +48,7 @@
                   <Image url="@static/images/powered.png" />
                </image>
             </ImageView>
-            <TextArea fx:ip="textArea" layoutX="14.0" layoutY="12.0" prefHeight="315.0" prefWidth="488.0" styleClass="text-area" stylesheets="@static/css/text_area.css" />
+            <TextArea fx:id="textArea" layoutX="14.0" layoutY="12.0" prefHeight="315.0" prefWidth="488.0" styleClass="text-area" stylesheets="@static/css/text_area.css" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" height="362.0" layoutY="338.0" stroke="TRANSPARENT" strokeType="INSIDE" width="627.0" AnchorPane.bottomAnchor="0.0">
                <fill>
                   <LinearGradient endX="0.5048543689320389" endY="0.6699029126213591" startX="0.587378640776699" startY="0.34466019417475735">
@@ -60,7 +60,7 @@
                </fill></Rectangle>
             <Line endX="591.0" endY="1.0" layoutX="35.0" layoutY="338.0" startX="-35.0" stroke="#ffffff9f" />
             <Line endX="6.103515625E-5" endY="362.0" layoutX="627.0" layoutY="338.0" startX="6.103515625E-5" startY="1.0" stroke="#ffffffc1" />
-            <TextArea fx:ip="resultText" layoutX="14.0" layoutY="350.0" prefHeight="342.0" prefWidth="598.0" styleClass="text-area" stylesheets="@static/css/text_area.css" />
+            <TextArea fx:id="resultText" layoutX="14.0" layoutY="350.0" prefHeight="342.0" prefWidth="598.0" styleClass="text-area" stylesheets="@static/css/text_area.css" />
             <Line endX="61.70709228515625" endY="1.29290771484375" layoutX="565.0" layoutY="336.0" startX="61.00006103515625" startY="-336.0" stroke="#ffffff9f" />
             <Label layoutX="876.0" layoutY="25.0" styleClass="#text" stylesheets="@static/css/label.css" text="OFF/ON" textFill="WHITE" />
             <Button layoutX="516.0" layoutY="213.0" mnemonicParsing="false" onAction="#pressButton" prefHeight="46.0" prefWidth="96.0" styleClass="#button" stylesheets="@static/css/button.css" text="Clear" textFill="WHITE" wrapText="true">
@@ -68,12 +68,12 @@
                   <Font name="Lucida Bright Regular" size="19.0" />
                </font>
             </Button>
-            <ImageView fx:ip="switchOn" fitHeight="64.0" fitWidth="64.0" layoutX="889.0" layoutY="61.0" onMousePressed="#switchOff">
+            <ImageView fx:id="switchOn" fitHeight="64.0" fitWidth="64.0" layoutX="889.0" layoutY="61.0" onMousePressed="#switchOff">
                <image>
                   <Image url="@static/images/turn_on.png" />
                </image>
             </ImageView>
-            <ImageView fx:ip="switchOff" fitHeight="64.0" fitWidth="64.0" layoutX="889.0" layoutY="61.0" onMousePressed="#switchOn">
+            <ImageView fx:id="switchOff" fitHeight="64.0" fitWidth="64.0" layoutX="889.0" layoutY="61.0" onMousePressed="#switchOn">
                <image>
                   <Image url="@static/images/turn_off.png" />
                </image>

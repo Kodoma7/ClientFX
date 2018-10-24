@@ -3,13 +3,14 @@ package com.kodoma;
 import com.google.common.collect.Sets;
 
 import java.util.HashSet;
+import java.util.Observable;
 
 /**
  * Model class.
  * Created on 30.09.2018.
  * @author Kodoma.
  */
-public class Model {
+public class Model extends Observable {
     private static final Model INSTANCE = new Model();
     private boolean isEnabled;
     private String sdp;
@@ -43,5 +44,10 @@ public class Model {
 
     public void setSdp(String sdp) {
         this.sdp = sdp;
+    }
+
+    public void printLog(String text) {
+        setChanged();
+        notifyObservers(text);
     }
 }
