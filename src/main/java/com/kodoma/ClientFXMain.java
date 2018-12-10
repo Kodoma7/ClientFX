@@ -1,5 +1,7 @@
 package com.kodoma;
 
+import com.kodoma.client.FXWebSocketClient;
+import com.kodoma.messenger.FXMessenger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class ClientFXMain extends Application {
+
+    private FXWebSocketClient client;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -20,6 +24,21 @@ public class ClientFXMain extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
+    }
+
+    @Override
+    public void init() throws Exception {
+        client = FXWebSocketClient.getClient("wss://192.168.56.2:8443/restservice/fxRemote");
+
+        FXMessenger.getInstance().setClient(client);
+        client.start();
+        super.init();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        client.start();
+        super.stop();
     }
 
     public static void main(String[] args) {

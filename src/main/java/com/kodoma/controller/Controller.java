@@ -1,5 +1,6 @@
-package com.kodoma;
+package com.kodoma.controller;
 
+import com.kodoma.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -18,7 +19,7 @@ public class Controller implements Observer {
 
     @FXML private ImageView switchOff;
 
-    private final Model model = Model.getInstance();
+    private final Model model = new Model();
 
     public Controller() {
         model.addObserver(this);
@@ -31,7 +32,6 @@ public class Controller implements Observer {
 
     public void pressButton(ActionEvent event) {
         final String text = textArea.getText();
-        model.setSdp(text);
     }
 
     public void switchOn() {
