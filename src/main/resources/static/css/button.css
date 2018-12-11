@@ -1,9 +1,13 @@
 .button {
-    -fx-background-color: linear-gradient(#e5f828, #59784C);
-    -fx-font-size: 24;
-    -fx-font-family: Pattaya;
+    -fx-background-color: #7d1234;
+    -fx-font-size: 18;
+    -fx-font-family: Ubuntu;
+}
+
+.button:hover {
+    -fx-background-color: #7d1234;
 }
 
 .button:pressed {
-    -fx-background-color: rgba(115, 128, 19, 0.67);
+    -fx-background-color: #4b0b1f;
 }

@@ -3,6 +3,7 @@ package com.kodoma;
 import com.kodoma.client.FXWebSocketClient;
 import com.kodoma.messenger.FXMessenger;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,13 +17,17 @@ public class ClientFXMain extends Application {
     public void start(Stage primaryStage) throws Exception{
         final Parent root = FXMLLoader.load(getClass().getResource("/sample.fxml"));
         final Scene scene = new Scene(root, 1000, 689);
+        final ObservableList<String> rootStylesheets = root.getStylesheets();
+        final ObservableList<String> sceneStylesheets = scene.getStylesheets();
 
-        root.getStylesheets().add(getClass().getResource("/static/fonts/pattaya.ttf").toExternalForm());
-        scene.getStylesheets().add(getClass().getResource("/static/fonts/pattaya.ttf").toExternalForm());
+        rootStylesheets.add(getClass().getResource("/static/fonts/pattaya.ttf").toExternalForm());
+        rootStylesheets.add(getClass().getResource("/static/fonts/ubuntu.ttf").toExternalForm());
+
+        sceneStylesheets.add(getClass().getResource("/static/fonts/pattaya.ttf").toExternalForm());
+        sceneStylesheets.add(getClass().getResource("/static/fonts/ubuntu.ttf").toExternalForm());
 
         primaryStage.setTitle("ClientFX");
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

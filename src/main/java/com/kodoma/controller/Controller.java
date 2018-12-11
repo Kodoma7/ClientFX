@@ -13,8 +13,6 @@ public class Controller implements Observer {
 
     @FXML private TextArea textArea;
 
-    @FXML private TextArea resultText;
-
     @FXML private ImageView switchOn;
 
     @FXML private ImageView switchOff;
@@ -27,7 +25,7 @@ public class Controller implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        resultText.setText(resultText.getText().concat(arg.toString() + "\n"));
+        textArea.setText(textArea.getText().concat(arg.toString() + "\n"));
     }
 
     public void pressButton(ActionEvent event) {
