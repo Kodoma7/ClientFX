@@ -15,7 +15,7 @@ public class ClientFXMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        final Parent root = FXMLLoader.load(getClass().getResource("/sample.fxml"));
+        final Parent root = FXMLLoader.load(getClass().getResource("/scene.fxml"));
         final Scene scene = new Scene(root, 1000, 689);
         final ObservableList<String> rootStylesheets = root.getStylesheets();
         final ObservableList<String> sceneStylesheets = scene.getStylesheets();

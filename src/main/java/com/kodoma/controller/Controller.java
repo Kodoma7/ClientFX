@@ -1,11 +1,13 @@
 package com.kodoma.controller;
 
 import com.kodoma.model.Model;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 
+import javax.annotation.PostConstruct;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -23,9 +25,15 @@ public class Controller implements Observer {
         model.addObserver(this);
     }
 
+    @PostConstruct
+    private void init() {
+        textArea.textProperty().addListener(
+                (ChangeListener<Object>)(observable, oldValue, newValue) -> textArea.setScrollTop(Double.MAX_VALUE));
+    }
+
     @Override
-    public void update(Observable o, Object arg) {
-        textArea.setText(textArea.getText().concat(arg.toString() + "\n"));
+    public synchronized void update(Observable o, Object arg) {
+        textArea.appendText(arg.toString() + "\n");
     }
 
     public void pressButton(ActionEvent event) {

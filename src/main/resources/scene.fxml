@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="905.0" style="-fx-background-color: #2d0922;" xmlns="http://javafx.com/javafx/8.0.191" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="905.0" style="-fx-background-color: #2d0922;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kodoma.controller.Controller">
    <children>
-      <TextArea fx:id="textArea" editable="false" layoutX="-6.0" pickOnBounds="false" prefHeight="695.0" prefWidth="905.0" stylesheets="@static/css/text_area.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <cursor>
-            <Cursor fx:constant="NONE" />
-         </cursor></TextArea>
-      <Button depthTest="DISABLE" layoutX="834.0" layoutY="14.0" mnemonicParsing="false" pickOnBounds="false" stylesheets="@static/css/button.css" text="Start" textAlignment="CENTER" />
-      <Button depthTest="DISABLE" layoutX="834.0" layoutY="58.0" mnemonicParsing="false" pickOnBounds="false" stylesheets="@static/css/button.css" text="Stop" textAlignment="CENTER" />
+      <TextArea fx:id="textArea" prefHeight="705.0" prefWidth="912.0" stylesheets="@static/css/text_area.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>
