@@ -33,7 +33,7 @@ public class ClientFXMain extends Application {
 
     @Override
     public void init() throws Exception {
-        client = FXWebSocketClient.getClient("wss://192.168.127.237:8443/csa/fxRemote")
+        client = FXWebSocketClient.getClient("wss://192.168.56.2:8443/restservice/fxRemote")
                                   .setUserName("...")
                                   .setUserPassword("...");
 
