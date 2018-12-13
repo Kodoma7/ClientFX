@@ -1,6 +1,7 @@
 package com.kodoma.controller;
 
 import com.kodoma.model.Model;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,8 +33,12 @@ public class Controller implements Observer {
     }
 
     @Override
-    public synchronized void update(Observable o, Object arg) {
-        textArea.appendText(arg.toString() + "\n");
+    public void update(Observable o, Object arg) {
+        printLog(arg.toString());
+    }
+
+    private void printLog(final String text) {
+        Platform.runLater(() -> textArea.appendText(text + "\n") );
     }
 
     public void pressButton(ActionEvent event) {

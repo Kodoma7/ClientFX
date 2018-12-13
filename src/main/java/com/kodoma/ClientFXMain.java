@@ -14,7 +14,7 @@ public class ClientFXMain extends Application {
     private FXWebSocketClient client;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         final Parent root = FXMLLoader.load(getClass().getResource("/scene.fxml"));
         final Scene scene = new Scene(root, 1000, 689);
         final ObservableList<String> rootStylesheets = root.getStylesheets();
