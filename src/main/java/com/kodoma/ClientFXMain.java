@@ -34,11 +34,11 @@ public class ClientFXMain extends Application {
 
     @Override
     public void init() throws Exception {
-        client = FXWebSocketClient.getClient("wss://192.168.56.2:8443/restservice/fxRemote")
-                                  .setUserName("...")
-                                  .setUserPassword("...");
+        client = FXWebSocketClient.getClient("wss://135.60.86.6:8443/csa/fxRemote")
+                                  .setUserName("17451231261@avayamcs.com")
+                                  .setUserPassword("1234567");
 
-        FXMessenger.MESSENGER.setClient(client);
+        FXMessenger.getInstance().setClient(client);
         client.start();
 
         ValueHolder.HOLDER.setValue(client);
@@ -49,6 +49,7 @@ public class ClientFXMain extends Application {
     public void stop() throws Exception {
         client.stop();
         super.stop();
+        System.exit(0);
     }
 
     public static void main(String[] args) {

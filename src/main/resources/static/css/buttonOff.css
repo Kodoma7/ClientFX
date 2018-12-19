@@ -1,0 +1,14 @@
+.button {
+    -fx-background-color: #590d25;
+    -fx-font-size: 16;
+    -fx-font-family: Ubuntu;
+    -fx-text-fill: #595959;
+}
+
+.button:hover {
+    -fx-background-color: #590d25;
+}
+
+.button:pressed {
+    -fx-background-color: #4b0b1f;
+}

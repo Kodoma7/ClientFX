@@ -17,14 +17,13 @@ import java.util.Observer;
 public class Controller implements Observer {
 
     @FXML private TextArea textArea;
-
-    @FXML private Button power;
-
+    @FXML private Button powerButton;
     @FXML private ImageView switchOn;
-
     @FXML private ImageView switchOff;
 
     private final Model model = new Model();
+
+    private boolean powerButtonOn = true;
 
     public Controller() {
         model.addObserver(this);
@@ -32,6 +31,8 @@ public class Controller implements Observer {
 
     @PostConstruct
     private void init() {
+        ((FXWebSocketClient)ValueHolder.HOLDER.getValue()).sendMessage("client_enable", true);
+
         textArea.textProperty().addListener(
                 (ChangeListener<Object>)(observable, oldValue, newValue) -> textArea.setScrollTop(Double.MAX_VALUE));
     }
@@ -45,14 +46,30 @@ public class Controller implements Observer {
         Platform.runLater(() -> textArea.appendText(text + "\n") );
     }
 
-    public void powerOn() {
+    public void powerOn(ActionEvent event) {
         final FXWebSocketClient client = (FXWebSocketClient)ValueHolder.HOLDER.getValue();
 
         client.sendMessage("client_enable", true);
     }
 
-    public void pressButton(ActionEvent event) {
-        final String text = textArea.getText();
+    public void powerButtonClick(ActionEvent event) {
+        final FXWebSocketClient client = (FXWebSocketClient)ValueHolder.HOLDER.getValue();
+
+        if (powerButtonOn) {
+            powerButton.setText("Off");
+            powerButton.getStylesheets().add("/static/css/buttonOff.css");
+            powerButton.getStylesheets().remove("/static/css/buttonOn.css");
+            powerButtonOn = false;
+
+            client.sendMessage("client_enable", false);
+        } else {
+            powerButton.setText("On");
+            powerButton.getStylesheets().add("/static/css/buttonOn.css");
+            powerButton.getStylesheets().remove("/static/css/buttonOff.css");
+            powerButtonOn = true;
+
+            client.sendMessage("client_enable", true);
+        }
     }
 
     public void switchOn() {
