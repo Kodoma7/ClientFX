@@ -18,13 +18,7 @@ public class Model extends Observable {
     }
 
     private void init() {
-        final FXMessenger.ClientConsumer consumer = new FXMessenger.ClientConsumer() {
-
-            @Override
-            public void onMessage(String message) {
-                printLog(message);
-            }
-        };
+        final FXMessenger.ClientConsumer consumer = this::printLog;
         consumer.process();
     }
 

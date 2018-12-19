@@ -1,6 +1,7 @@
 package com.kodoma;
 
 import com.kodoma.client.FXWebSocketClient;
+import com.kodoma.controller.ValueHolder;
 import com.kodoma.messenger.FXMessenger;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -33,12 +34,14 @@ public class ClientFXMain extends Application {
 
     @Override
     public void init() throws Exception {
-        client = FXWebSocketClient.getClient("wss://192.168.127.237:8443/csa/fxRemote")
-                                  .setUserName("dmsokol2")
-                                  .setUserPassword("RAPtor1234");
+        client = FXWebSocketClient.getClient("wss://192.168.56.2:8443/restservice/fxRemote")
+                                  .setUserName("...")
+                                  .setUserPassword("...");
 
-        FXMessenger.getInstance().setClient(client);
+        FXMessenger.MESSENGER.setClient(client);
         client.start();
+
+        ValueHolder.HOLDER.setValue(client);
         super.init();
     }
 

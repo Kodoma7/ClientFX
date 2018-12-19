@@ -1,10 +1,12 @@
 package com.kodoma.controller;
 
+import com.kodoma.client.FXWebSocketClient;
 import com.kodoma.model.Model;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 
@@ -15,6 +17,8 @@ import java.util.Observer;
 public class Controller implements Observer {
 
     @FXML private TextArea textArea;
+
+    @FXML private Button power;
 
     @FXML private ImageView switchOn;
 
@@ -39,6 +43,12 @@ public class Controller implements Observer {
 
     private void printLog(final String text) {
         Platform.runLater(() -> textArea.appendText(text + "\n") );
+    }
+
+    public void powerOn() {
+        final FXWebSocketClient client = (FXWebSocketClient)ValueHolder.HOLDER.getValue();
+
+        client.sendMessage("client_enable", true);
     }
 
     public void pressButton(ActionEvent event) {
