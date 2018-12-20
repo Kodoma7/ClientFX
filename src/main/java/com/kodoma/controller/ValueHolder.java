@@ -1,5 +1,9 @@
 package com.kodoma.controller;
 
+import com.google.common.collect.Maps;
+
+import java.util.Map;
+
 /**
  * ValueHolder class.
  * Created on 17.12.2018.
@@ -8,17 +12,16 @@ package com.kodoma.controller;
 public class ValueHolder<V> {
 
     public static final ValueHolder HOLDER = new ValueHolder<>();
+    private static final Map<String, Object> MAP = Maps.newHashMap();
 
     private ValueHolder() {
     }
 
-    private V value;
-
-    public V getValue() {
-        return value;
+    public V getValue(final String name) {
+        return (V)MAP.get(name);
     }
 
-    public void setValue(V value) {
-        this.value = value;
+    public void addValue(final String name, final Object value) {
+        MAP.put(name, value);
     }
 }

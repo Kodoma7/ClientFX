@@ -31,7 +31,7 @@ public class Controller implements Observer {
 
     @PostConstruct
     private void init() {
-        ((FXWebSocketClient)ValueHolder.HOLDER.getValue()).sendMessage("client_enable", true);
+        ((FXWebSocketClient)ValueHolder.HOLDER.getValue("client")).sendMessage("client_enable", true);
 
         textArea.textProperty().addListener(
                 (ChangeListener<Object>)(observable, oldValue, newValue) -> textArea.setScrollTop(Double.MAX_VALUE));
@@ -47,13 +47,13 @@ public class Controller implements Observer {
     }
 
     public void powerOn(ActionEvent event) {
-        final FXWebSocketClient client = (FXWebSocketClient)ValueHolder.HOLDER.getValue();
+        final FXWebSocketClient client = (FXWebSocketClient)ValueHolder.HOLDER.getValue("client");
 
         client.sendMessage("client_enable", true);
     }
 
     public void powerButtonClick(ActionEvent event) {
-        final FXWebSocketClient client = (FXWebSocketClient)ValueHolder.HOLDER.getValue();
+        final FXWebSocketClient client = (FXWebSocketClient)ValueHolder.HOLDER.getValue("client");
 
         if (powerButtonOn) {
             powerButton.setText("Off");
