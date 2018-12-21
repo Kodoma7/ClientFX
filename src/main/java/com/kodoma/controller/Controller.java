@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.ImageView;
 
 import javax.annotation.PostConstruct;
 import java.util.Observable;
@@ -18,8 +17,6 @@ public class Controller implements Observer {
 
     @FXML private TextArea textArea;
     @FXML private Button powerButton;
-    @FXML private ImageView switchOn;
-    @FXML private ImageView switchOff;
 
     private final Model model = new Model();
 
@@ -70,17 +67,5 @@ public class Controller implements Observer {
 
             client.sendMessage("client_enable", true);
         }
-    }
-
-    public void switchOn() {
-        switchOn.setVisible(true);
-        switchOff.setVisible(false);
-        model.setEnabled(true);
-    }
-
-    public void switchOff() {
-        switchOn.setVisible(false);
-        switchOff.setVisible(true);
-        model.setEnabled(false);
     }
 }

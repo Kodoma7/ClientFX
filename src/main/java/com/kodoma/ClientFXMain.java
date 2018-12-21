@@ -1,7 +1,6 @@
 package com.kodoma;
 
 import com.kodoma.client.FXWebSocketClient;
-import com.kodoma.controller.FXChangeListener;
 import com.kodoma.controller.ValueHolder;
 import com.kodoma.messenger.FXMessenger;
 import javafx.application.Application;
@@ -10,8 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.fxmisc.richtext.CodeArea;
-import org.fxmisc.richtext.LineNumberFactory;
 
 public class ClientFXMain extends Application {
 
@@ -23,21 +20,12 @@ public class ClientFXMain extends Application {
         final Scene scene = new Scene(root, 1000, 700);
         final ObservableList<String> rootStylesheets = root.getStylesheets();
         final ObservableList<String> sceneStylesheets = scene.getStylesheets();
-        final CodeArea codeArea = new CodeArea();
-        final FXChangeListener listener = new FXChangeListener(codeArea);
 
         rootStylesheets.add(getClass().getResource("/static/fonts/pattaya.ttf").toExternalForm());
         rootStylesheets.add(getClass().getResource("/static/fonts/ubuntu.ttf").toExternalForm());
 
         sceneStylesheets.add(getClass().getResource("/static/fonts/pattaya.ttf").toExternalForm());
         sceneStylesheets.add(getClass().getResource("/static/fonts/ubuntu.ttf").toExternalForm());
-
-        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
-
-        ValueHolder.HOLDER.addValue("change_listener", listener);
-
-        codeArea.textProperty().addListener(listener);
-        codeArea.replaceText(0, 0, "");
 
         primaryStage.setTitle("ClientFX");
         primaryStage.setScene(scene);
