@@ -1,0 +1,23 @@
+.styled-text-area .list-view {
+    -fx-background-color: rgba(255, 255, 255, 0);
+}
+
+.styled-text-area .source-segment {
+    -fx-font-family: Ubuntu;
+    -fx-font-size: 16;
+    -styled-text-color: white;
+}
+
+.styled-text-area .plain-source-segment {
+    -fx-font-family: Ubuntu;
+    -fx-font-size: 16;
+}
+
+.styled-text-area .line-ruler-text {
+    -fx-font-family: Ubuntu;
+    -fx-font-size: 16;
+}
+
+.styled-text-area .list-view {
+    -fx-fixed-cell-size: 16;
+}

@@ -9,15 +9,15 @@ import java.util.Map;
  * Created on 17.12.2018.
  * @author Kodoma.
  */
-public class ValueHolder<V> {
+public class ValueHolder {
 
-    public static final ValueHolder HOLDER = new ValueHolder<>();
+    public static final ValueHolder HOLDER = new ValueHolder();
     private static final Map<String, Object> MAP = Maps.newHashMap();
 
     private ValueHolder() {
     }
 
-    public V getValue(final String name) {
+    public <V> V getValue(final String name) {
         return (V)MAP.get(name);
     }
 
