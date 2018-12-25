@@ -1,7 +1,5 @@
 package com.kodoma.model;
 
-import com.kodoma.messenger.FXMessenger;
-
 import java.util.Observable;
 
 /**
@@ -18,8 +16,8 @@ public class Model extends Observable {
     }
 
     private void init() {
-        final FXMessenger.ClientConsumer consumer = this::printLog;
-        consumer.process();
+/*        final FXMessenger.ClientConsumer consumer = this::printLog;
+        consumer.process();*/
     }
 
     public boolean isEnabled() {

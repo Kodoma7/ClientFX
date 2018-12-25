@@ -17,19 +17,19 @@ public class Controller implements Observer {
 
     @FXML private TextArea textArea;
     @FXML private Button powerButton;
+    private FXWebSocketClient client;
+    private boolean powerButtonOn = true;
 
     private final Model model = new Model();
 
-    private boolean powerButtonOn = true;
-
     public Controller() {
         model.addObserver(this);
+        ValueHolder.HOLDER.addValue("controller", this);
     }
 
     @PostConstruct
     private void init() {
-        ((FXWebSocketClient)ValueHolder.HOLDER.getValue("client")).sendMessage("client_enable", true);
-
+        client.sendMessage("client_enable", true);
         textArea.textProperty().addListener(
                 (ChangeListener<Object>)(observable, oldValue, newValue) -> textArea.setScrollTop(Double.MAX_VALUE));
     }
@@ -40,18 +40,14 @@ public class Controller implements Observer {
     }
 
     private void printLog(final String text) {
-        Platform.runLater(() -> textArea.appendText(text + "\n") );
+        Platform.runLater(() -> textArea.appendText(text + "\n"));
     }
 
     public void powerOn(ActionEvent event) {
-        final FXWebSocketClient client = (FXWebSocketClient)ValueHolder.HOLDER.getValue("client");
-
         client.sendMessage("client_enable", true);
     }
 
     public void powerButtonClick(ActionEvent event) {
-        final FXWebSocketClient client = (FXWebSocketClient)ValueHolder.HOLDER.getValue("client");
-
         if (powerButtonOn) {
             powerButton.setText("Off");
             powerButton.getStylesheets().add("/static/css/buttonOff.css");
@@ -67,5 +63,9 @@ public class Controller implements Observer {
 
             client.sendMessage("client_enable", true);
         }
+    }
+
+    public void setClient(FXWebSocketClient client) {
+        this.client = client;
     }
 }
