@@ -1,3 +1,13 @@
+@font-face{
+    font-family: 'ubuntu';
+    src: url('../fonts/ubuntu.ttf');
+}
+
+.default {
+    -fx-fill: white;
+    -fx-font-family: "ubuntu";
+    -fx-font-size: 16;
+}
 .keyword {
     -fx-fill: #1a9a1e;
     -fx-font-weight: bold;

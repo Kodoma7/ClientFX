@@ -3,13 +3,14 @@ package com.kodoma;
 import com.kodoma.client.FXWebSocketClient;
 import com.kodoma.controller.Controller;
 import com.kodoma.controller.ValueHolder;
+import com.kodoma.messenger.FXMessenger;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
@@ -17,7 +18,6 @@ import org.fxmisc.richtext.model.StyleSpansBuilder;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,23 +34,27 @@ public class ClientFXMain extends Application {
         final String stylesheet = getClass().getResource("/static/css/java-keywords.css").toExternalForm();
         final CodeArea codeArea = new CodeArea();
         final Controller controller = (Controller)ValueHolder.HOLDER.getValue("controller");
+        final VirtualizedScrollPane<CodeArea> scrollPane = new VirtualizedScrollPane<>(codeArea);
 
         controller.setClient(client);
+        controller.setCodeArea(codeArea);
+
+        scrollPane.getStylesheets().add("/static/css/scroll_pane.css");
 
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
         codeArea.getStylesheets().add(stylesheet);
+        codeArea.getStylesheets().add("/static/css/code_area.css");
         codeArea.textProperty().addListener((obs, oldText, newText) -> {
             codeArea.setStyleSpans(0, computeHighlighting(newText));
         });
-        //codeArea.replaceText(0, 0, "AAA");
         codeArea.setAutoScrollOnDragDesired(true);
 
-        root.getChildren().add(codeArea);
+        root.getChildren().add(0, scrollPane);
 
-        AnchorPane.setBottomAnchor(codeArea, 0.0);
-        AnchorPane.setTopAnchor(codeArea, 0.0);
-        AnchorPane.setLeftAnchor(codeArea, 0.0);
-        AnchorPane.setRightAnchor(codeArea, 0.0);
+        AnchorPane.setBottomAnchor(scrollPane, 0.0);
+        AnchorPane.setTopAnchor(scrollPane, 0.0);
+        AnchorPane.setLeftAnchor(scrollPane, 0.0);
+        AnchorPane.setRightAnchor(scrollPane, 0.0);
 
         rootStylesheets.add(getClass().getResource("/static/fonts/pattaya.ttf").toExternalForm());
         rootStylesheets.add(getClass().getResource("/static/fonts/ubuntu.ttf").toExternalForm());
@@ -78,29 +82,27 @@ public class ClientFXMain extends Application {
             }
             assert styleClass != null;
 
-            spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
+            spansBuilder.add(Collections.singleton("default"), matcher.start() - lastKwEnd);
             spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
             lastKwEnd = matcher.end();
         }
-        spansBuilder.add(Collections.emptyList(), text.length() - lastKwEnd);
+        spansBuilder.add(Collections.singleton("default"), text.length() - lastKwEnd);
 
         return spansBuilder.create();
     }
 
     @Override
     public void init() throws Exception {
-        /*client = FXWebSocketClient.getClient("wss://192.168.127.237:8443/csa/fxRemote")
-                                  .setUserName("dmsokol2")
-                                  .setUserPassword("RAPtor1234");
+        client = FXWebSocketClient.getClient("wss://192.168.56.2:8443/restservice/fxRemote");
 
         FXMessenger.getInstance().setClient(client);
-        client.start();*/
+        client.start();
         super.init();
     }
 
     @Override
     public void stop() throws Exception {
-        //client.stop();
+        client.stop();
         super.stop();
         System.exit(0);
     }

@@ -3,11 +3,10 @@ package com.kodoma.controller;
 import com.kodoma.client.FXWebSocketClient;
 import com.kodoma.model.Model;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import org.fxmisc.richtext.CodeArea;
 
 import javax.annotation.PostConstruct;
 import java.util.Observable;
@@ -15,9 +14,10 @@ import java.util.Observer;
 
 public class Controller implements Observer {
 
-    @FXML private TextArea textArea;
     @FXML private Button powerButton;
+
     private FXWebSocketClient client;
+    private CodeArea codeArea;
     private boolean powerButtonOn = true;
 
     private final Model model = new Model();
@@ -30,8 +30,6 @@ public class Controller implements Observer {
     @PostConstruct
     private void init() {
         client.sendMessage("client_enable", true);
-        textArea.textProperty().addListener(
-                (ChangeListener<Object>)(observable, oldValue, newValue) -> textArea.setScrollTop(Double.MAX_VALUE));
     }
 
     @Override
@@ -40,7 +38,9 @@ public class Controller implements Observer {
     }
 
     private void printLog(final String text) {
-        Platform.runLater(() -> textArea.appendText(text + "\n"));
+        Platform.runLater(() -> {
+            codeArea.appendText(text + "\n");
+        });
     }
 
     public void powerOn(ActionEvent event) {
@@ -67,5 +67,9 @@ public class Controller implements Observer {
 
     public void setClient(FXWebSocketClient client) {
         this.client = client;
+    }
+
+    public void setCodeArea(CodeArea codeArea) {
+        this.codeArea = codeArea;
     }
 }

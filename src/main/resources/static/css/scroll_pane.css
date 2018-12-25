@@ -1,0 +1,23 @@
+@font-face{
+    font-family: 'ubuntu';
+    src: url('../fonts/ubuntu.ttf');
+}
+
+.scroll-pane {
+    -fx-background-color: rgba(255, 255, 255, 0);
+    -fx-text-fill: white;
+    -fx-font-family: "ubuntu";
+    -fx-font-size: 16;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .content{
+    -fx-background-color: transparent;
+}
