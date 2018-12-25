@@ -6,9 +6,17 @@ import com.kodoma.messenger.FXMessenger;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.LineNumberFactory;
+import org.fxmisc.richtext.model.StyleSpans;
+import org.fxmisc.richtext.model.StyleSpansBuilder;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.IntFunction;
 
 public class ClientFXMain extends Application {
 
@@ -16,10 +24,20 @@ public class ClientFXMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        final Parent root = FXMLLoader.load(getClass().getResource("/scene.fxml"));
+        final AnchorPane root = FXMLLoader.load(getClass().getResource("/scene.fxml"));
         final Scene scene = new Scene(root, 1000, 700);
         final ObservableList<String> rootStylesheets = root.getStylesheets();
         final ObservableList<String> sceneStylesheets = scene.getStylesheets();
+        final CodeArea codeArea = new CodeArea();
+
+        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
+
+        codeArea.textProperty().addListener((obs, oldText, newText) -> {
+            codeArea.setStyleSpans(0, computeHighlighting(newText));
+        });
+        codeArea.getStylesheets().add("/static/css/text.css");
+
+        root.getChildren().add(codeArea);
 
         rootStylesheets.add(getClass().getResource("/static/fonts/pattaya.ttf").toExternalForm());
         rootStylesheets.add(getClass().getResource("/static/fonts/ubuntu.ttf").toExternalForm());
@@ -30,6 +48,14 @@ public class ClientFXMain extends Application {
         primaryStage.setTitle("ClientFX");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private static StyleSpans<Collection<String>> computeHighlighting(final String text) {
+        final StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
+
+        spansBuilder.add(Collections.singleton(text), 0);
+
+        return spansBuilder.create();
     }
 
     @Override
