@@ -40,11 +40,8 @@ public class Controller implements Observer {
     private void printLog(final String text) {
         Platform.runLater(() -> {
             codeArea.appendText(text + "\n");
+            codeArea.scrollYToPixel(codeArea.getContent().getLength());
         });
-    }
-
-    public void powerOn(ActionEvent event) {
-        client.sendMessage("client_enable", true);
     }
 
     public void powerButtonClick(ActionEvent event) {

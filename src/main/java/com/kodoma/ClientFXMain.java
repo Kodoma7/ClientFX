@@ -31,7 +31,6 @@ public class ClientFXMain extends Application {
         final Scene scene = new Scene(root, 1000, 700);
         final ObservableList<String> rootStylesheets = root.getStylesheets();
         final ObservableList<String> sceneStylesheets = scene.getStylesheets();
-        final String stylesheet = getClass().getResource("/static/css/java-keywords.css").toExternalForm();
         final CodeArea codeArea = new CodeArea();
         final Controller controller = (Controller)ValueHolder.HOLDER.getValue("controller");
         final VirtualizedScrollPane<CodeArea> scrollPane = new VirtualizedScrollPane<>(codeArea);
@@ -42,12 +41,14 @@ public class ClientFXMain extends Application {
         scrollPane.getStylesheets().add("/static/css/scroll_pane.css");
 
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
-        codeArea.getStylesheets().add(stylesheet);
+        codeArea.getStylesheets().clear();
+        codeArea.getStylesheets().add("/static/css/java-keywords.css");
         codeArea.getStylesheets().add("/static/css/code_area.css");
+        codeArea.getStylesheets().add("/static/css/styled-text-area.css");
+
         codeArea.textProperty().addListener((obs, oldText, newText) -> {
             codeArea.setStyleSpans(0, computeHighlighting(newText));
         });
-        codeArea.setAutoScrollOnDragDesired(true);
 
         root.getChildren().add(0, scrollPane);
 
@@ -68,7 +69,7 @@ public class ClientFXMain extends Application {
     }
 
     private static StyleSpans<Collection<String>> computeHighlighting(final String text) {
-        final Pattern pattern = Pattern.compile("(?<KEYWORD>\\b(INFO|WARNING)\\b)");
+        final Pattern pattern = Pattern.compile("(?<KEYWORD>\\b(INVITE:|WARNING)\\b)");
 
         final StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
         final Matcher matcher = pattern.matcher(text);
