@@ -15,6 +15,7 @@
 .styled-text-area .caret {
     -rtfx-blink-rate: 500ms;
     -fx-stroke-width: 1.0;
+    -fx-stroke: white;
 }
 
 .styled-text-area .selection {
