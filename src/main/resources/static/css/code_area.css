@@ -21,7 +21,3 @@
 .code-area .scroll-pane .content{
     -fx-background-color: transparent;
 }
-
-.lineno {
-    -fx-background-color: transparent;
-}

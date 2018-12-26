@@ -41,7 +41,6 @@ public class ClientFXMain extends Application {
 
         scrollPane.getStylesheets().add("/static/css/scroll_pane.css");
 
-        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
         codeArea.getStylesheets().clear();
         codeArea.getStylesheets().add("/static/css/java-keywords.css");
         codeArea.getStylesheets().add("/static/css/code_area.css");
