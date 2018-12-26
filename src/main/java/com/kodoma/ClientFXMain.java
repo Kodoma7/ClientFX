@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 public class ClientFXMain extends Application {
 
     private FXWebSocketClient client;
+    private static final Pattern PATTERN = Pattern.compile("(?<KEYWORD>\\b(?<=\n)([\\w|-]*?):)");
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -69,10 +70,8 @@ public class ClientFXMain extends Application {
     }
 
     private static StyleSpans<Collection<String>> computeHighlighting(final String text) {
-        final Pattern pattern = Pattern.compile("(?<KEYWORD>\\b(INVITE:|WARNING)\\b)");
-
         final StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
-        final Matcher matcher = pattern.matcher(text);
+        final Matcher matcher = PATTERN.matcher(text);
         int lastKwEnd = 0;
 
         while (matcher.find()) {
@@ -92,9 +91,30 @@ public class ClientFXMain extends Application {
         return spansBuilder.create();
     }
 
+    private static void regexTest(final String text) {
+        final Pattern pattern = Pattern.compile("(?<KEYWORD>\\b(?<=\n)([\\w|-]*?):)");
+        final StringBuilder sb = new StringBuilder();
+        final Matcher matcher = pattern.matcher(text);
+        int lastKwEnd = 0;
+
+        while (matcher.find()) {
+            String styleClass = "";
+
+            if (matcher.group("KEYWORD") != null) {
+                styleClass = "keyword";
+            }
+            assert styleClass != null;
+
+            sb.append(text.substring(matcher.start(), matcher.end())).append("\n");
+        }
+        System.out.println(sb.toString());
+    }
+
     @Override
     public void init() throws Exception {
-        client = FXWebSocketClient.getClient("wss://192.168.56.2:8443/restservice/fxRemote");
+        client = FXWebSocketClient.getClient("wss://135.60.86.6:8443/csa/fxRemote")
+                                  .setUserName("17451231261@avayamcs.com")
+                                  .setUserPassword("1234567");
 
         FXMessenger.getInstance().setClient(client);
         client.start();
