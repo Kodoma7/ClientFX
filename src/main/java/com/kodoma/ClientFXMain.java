@@ -12,7 +12,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
-import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 
@@ -23,8 +22,11 @@ import java.util.regex.Pattern;
 
 public class ClientFXMain extends Application {
 
+    private static final String[] SIP_HEADLINGS = new String[] {"INVITE.*SIP/2.0"};
+    private static final String SIP_HEADLING_PATTERN = "\\b(" + String.join("|", SIP_HEADLINGS) + ")\\b";
+    private static final Pattern HEADER_PATTERN = Pattern.compile("(?<KEYWORD>\\b(?<=\n)([\\w|-]*?):)|(?<STRING>" + SIP_HEADLING_PATTERN + ")");
+
     private FXWebSocketClient client;
-    private static final Pattern PATTERN = Pattern.compile("(?<KEYWORD>\\b(?<=\n)([\\w|-]*?):)");
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -70,7 +72,7 @@ public class ClientFXMain extends Application {
 
     private static StyleSpans<Collection<String>> computeHighlighting(final String text) {
         final StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
-        final Matcher matcher = PATTERN.matcher(text);
+        final Matcher matcher = HEADER_PATTERN.matcher(text);
         int lastKwEnd = 0;
 
         while (matcher.find()) {
@@ -78,6 +80,8 @@ public class ClientFXMain extends Application {
 
             if (matcher.group("KEYWORD") != null) {
                 styleClass = "keyword";
+            } else if (matcher.group("STRING") != null) {
+                styleClass = "string";
             }
             assert styleClass != null;
 
