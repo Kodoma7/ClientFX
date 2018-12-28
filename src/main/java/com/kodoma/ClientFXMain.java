@@ -3,7 +3,6 @@ package com.kodoma;
 import com.kodoma.client.FXWebSocketClient;
 import com.kodoma.controller.Controller;
 import com.kodoma.controller.ValueHolder;
-import com.kodoma.messenger.FXMessenger;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -22,10 +21,21 @@ import java.util.regex.Pattern;
 
 public class ClientFXMain extends Application {
 
-    private static final String[] SIP_HEADLINGS = new String[] {"INVITE.*SIP/2.0"};
-    private static final String SIP_HEADLING_PATTERN = "\\b(" + String.join("|", SIP_HEADLINGS) + ")\\b";
-    private static final Pattern HEADER_PATTERN = Pattern.compile("(?<KEYWORD>\\b(?<=\n)([\\w|-]*?):)|(?<STRING>" + SIP_HEADLING_PATTERN + ")");
+    private static final String[] SIP_HEADLINES = new String[] {"INVITE.*SIP/2.0", "NEGOTIATE.*SIP/2.0", "SIP/2.0 180 Ringing",
+                                                                "SIP/2.0 200 OK", "ACK.*SIP/2.0", "BYE.*SIP/2.0", "SUBSCRIBE.*SIP/2.0"};
 
+    private static final String SIP_HEADLINE = "\\b(" + String.join("|", SIP_HEADLINES) + ")\\b";
+    private static final String SIP_HEADER = "\\b(?<=\n)([\\w|-]*?):";
+    private static final String SIP_USER_FROM = "((?<=From.{1,30})(<sip:.*@.*>))";
+    private static final String SIP_USER_TO = "((?<=To.{1,30})(<sip:.*@.*>))";
+    private static final String SIP_SDP = "\\b(\\w=)\\b";
+
+    // <sip:skypeuser7715@csi71siteb.lab>
+    // ((?<=From.{1,30})(<sip:.*@.*>))
+
+    private static final Pattern PATTERN = Pattern.compile("(?<HEADER>" + SIP_HEADER + ")|(?<HEADLINE>" + SIP_HEADLINE +
+                                                           ")|(?<USERFROM>" + SIP_USER_FROM + ")|(?<USERTO>" + SIP_USER_TO +
+                                                           ")|(?<SDP>" + SIP_SDP + ")");
     private FXWebSocketClient client;
 
     @Override
@@ -44,7 +54,7 @@ public class ClientFXMain extends Application {
         scrollPane.getStylesheets().add("/static/css/scroll_pane.css");
 
         codeArea.getStylesheets().clear();
-        codeArea.getStylesheets().add("/static/css/java-keywords.css");
+        codeArea.getStylesheets().add("/static/css/sip-highlighting.css");
         codeArea.getStylesheets().add("/static/css/code_area.css");
         codeArea.getStylesheets().add("/static/css/styled-text-area.css");
 
@@ -72,21 +82,29 @@ public class ClientFXMain extends Application {
 
     private static StyleSpans<Collection<String>> computeHighlighting(final String text) {
         final StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
-        final Matcher matcher = HEADER_PATTERN.matcher(text);
+        final Matcher matcher = PATTERN.matcher(text);
         int lastKwEnd = 0;
+        int sdpStart = 0;
 
         while (matcher.find()) {
             String styleClass = "";
 
-            if (matcher.group("KEYWORD") != null) {
-                styleClass = "keyword";
-            } else if (matcher.group("STRING") != null) {
-                styleClass = "string";
+            if (matcher.group("HEADER") != null) {
+                styleClass = "header";
+            } else if (matcher.group("HEADLINE") != null) {
+                styleClass = "headline";
+            } else if (matcher.group("USERFROM") != null) {
+                styleClass = "userfrom";
+            } else if (matcher.group("USERTO") != null) {
+                styleClass = "userto";
+            } else if (matcher.group("SDP") != null) {
+                styleClass = "sdp";
             }
             assert styleClass != null;
 
             spansBuilder.add(Collections.singleton("default"), matcher.start() - lastKwEnd);
             spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
+
             lastKwEnd = matcher.end();
         }
         spansBuilder.add(Collections.singleton("default"), text.length() - lastKwEnd);
@@ -95,7 +113,7 @@ public class ClientFXMain extends Application {
     }
 
     private static void regexTest(final String text) {
-        final Pattern pattern = Pattern.compile("(?<KEYWORD>\\b(?<=\n)([\\w|-]*?):)");
+        final Pattern pattern = Pattern.compile("(?<HEADER>\\b(?<=\n)([\\w|-]*?):)");
         final StringBuilder sb = new StringBuilder();
         final Matcher matcher = pattern.matcher(text);
         int lastKwEnd = 0;
@@ -103,8 +121,8 @@ public class ClientFXMain extends Application {
         while (matcher.find()) {
             String styleClass = "";
 
-            if (matcher.group("KEYWORD") != null) {
-                styleClass = "keyword";
+            if (matcher.group("HEADER") != null) {
+                styleClass = "header";
             }
             assert styleClass != null;
 
@@ -115,18 +133,18 @@ public class ClientFXMain extends Application {
 
     @Override
     public void init() throws Exception {
-        client = FXWebSocketClient.getClient("wss://135.60.86.6:8443/csa/fxRemote")
+/*        client = FXWebSocketClient.getClient("wss://135.60.86.6:8443/csa/fxRemote")
                                   .setUserName("17451231261@avayamcs.com")
                                   .setUserPassword("1234567");
 
         FXMessenger.getInstance().setClient(client);
-        client.start();
+        client.start();*/
         super.init();
     }
 
     @Override
     public void stop() throws Exception {
-        client.stop();
+        //client.stop();
         super.stop();
         System.exit(0);
     }
