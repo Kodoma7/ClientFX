@@ -3,6 +3,7 @@ package com.kodoma;
 import com.kodoma.client.FXWebSocketClient;
 import com.kodoma.controller.Controller;
 import com.kodoma.controller.ValueHolder;
+import com.kodoma.messenger.FXMessenger;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -29,9 +30,6 @@ public class ClientFXMain extends Application {
     private static final String SIP_USER_FROM = "((?<=From.{1,30})(<sip:.*@.*>))";
     private static final String SIP_USER_TO = "((?<=To.{1,30})(<sip:.*@.*>))";
     private static final String SIP_SDP = "\\b(\\w=)\\b";
-
-    // <sip:skypeuser7715@csi71siteb.lab>
-    // ((?<=From.{1,30})(<sip:.*@.*>))
 
     private static final Pattern PATTERN = Pattern.compile("(?<HEADER>" + SIP_HEADER + ")|(?<HEADLINE>" + SIP_HEADLINE +
                                                            ")|(?<USERFROM>" + SIP_USER_FROM + ")|(?<USERTO>" + SIP_USER_TO +
@@ -84,7 +82,6 @@ public class ClientFXMain extends Application {
         final StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
         final Matcher matcher = PATTERN.matcher(text);
         int lastKwEnd = 0;
-        int sdpStart = 0;
 
         while (matcher.find()) {
             String styleClass = "";
@@ -100,8 +97,6 @@ public class ClientFXMain extends Application {
             } else if (matcher.group("SDP") != null) {
                 styleClass = "sdp";
             }
-            assert styleClass != null;
-
             spansBuilder.add(Collections.singleton("default"), matcher.start() - lastKwEnd);
             spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
 
@@ -112,39 +107,22 @@ public class ClientFXMain extends Application {
         return spansBuilder.create();
     }
 
-    private static void regexTest(final String text) {
-        final Pattern pattern = Pattern.compile("(?<HEADER>\\b(?<=\n)([\\w|-]*?):)");
-        final StringBuilder sb = new StringBuilder();
-        final Matcher matcher = pattern.matcher(text);
-        int lastKwEnd = 0;
-
-        while (matcher.find()) {
-            String styleClass = "";
-
-            if (matcher.group("HEADER") != null) {
-                styleClass = "header";
-            }
-            assert styleClass != null;
-
-            sb.append(text.substring(matcher.start(), matcher.end())).append("\n");
-        }
-        System.out.println(sb.toString());
-    }
-
     @Override
     public void init() throws Exception {
-/*        client = FXWebSocketClient.getClient("wss://135.60.86.6:8443/csa/fxRemote")
-                                  .setUserName("17451231261@avayamcs.com")
-                                  .setUserPassword("1234567");
+        client = FXWebSocketClient.getClient("wss://192.168.127.237:8443/csa/fxRemote")
+                                  .setUserName("dmsokol2")
+                                  .setUserPassword("RAPtor1234");
 
         FXMessenger.getInstance().setClient(client);
-        client.start();*/
+
+        client.start();
+        client.sendMessage("client_enable", true);
         super.init();
     }
 
     @Override
     public void stop() throws Exception {
-        //client.stop();
+        client.stop();
         super.stop();
         System.exit(0);
     }
