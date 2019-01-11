@@ -1,6 +1,7 @@
 package com.kodoma;
 
 import com.kodoma.client.FXWebSocketClient;
+import com.kodoma.constans.StyleClass;
 import com.kodoma.controller.Controller;
 import com.kodoma.controller.ValueHolder;
 import com.kodoma.messenger.FXMessenger;
@@ -27,14 +28,15 @@ public class ClientFXMain extends Application {
 
     private static final String SIP_HEADLINE = "\\b(" + String.join("|", SIP_HEADLINES) + ")\\b";
     private static final String SIP_HEADER = "\\b(?<=\n)([\\w|-]*?):";
-    private static final String SIP_USER_FROM = "((?<=From.{1,30})(<sip:.*@.*>))";
-    private static final String SIP_USER_TO = "((?<=To.{1,30})(<sip:.*@.*>))";
+    private static final String SIP_USER_FROM = "((?<=From.{1,40})(<sip:.*@.*>))";
+    private static final String SIP_USER_TO = "((?<=To.{1,40})(<sip:.*@.*>))";
     private static final String SIP_SDP = "\\b(\\w=)\\b";
 
-    private static final Pattern PATTERN = Pattern.compile("(?<HEADER>" + SIP_HEADER + ")|(?<HEADLINE>" + SIP_HEADLINE +
-                                                           ")|(?<USERFROM>" + SIP_USER_FROM + ")|(?<USERTO>" + SIP_USER_TO +
-                                                           ")|(?<SDP>" + SIP_SDP + ")");
+    private static final Pattern PATTERN = Pattern.compile("(?<header>" + SIP_HEADER + ")|(?<headline>" + SIP_HEADLINE +
+                                                           ")|(?<userfrom>" + SIP_USER_FROM + ")|(?<userto>" + SIP_USER_TO +
+                                                           ")|(?<sdp>" + SIP_SDP + ")");
     private FXWebSocketClient client;
+    private static boolean styleMatch;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -57,7 +59,12 @@ public class ClientFXMain extends Application {
         codeArea.getStylesheets().add("/static/css/styled-text-area.css");
 
         codeArea.textProperty().addListener((obs, oldText, newText) -> {
-            codeArea.setStyleSpans(0, computeHighlighting(newText));
+            if (oldText.length() <= newText.length()) {
+                codeArea.setStyleSpans(oldText.length(), computeHighlighting(newText.substring(oldText.length())));
+            }
+            if (!styleMatch) {
+                codeArea.setStyleSpans(0, computeHighlighting(newText));
+            }
         });
 
         root.getChildren().add(0, scrollPane);
@@ -82,27 +89,29 @@ public class ClientFXMain extends Application {
         final StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
         final Matcher matcher = PATTERN.matcher(text);
         int lastKwEnd = 0;
+        styleMatch = false;
 
         while (matcher.find()) {
+            styleMatch = true;
             String styleClass = "";
 
-            if (matcher.group("HEADER") != null) {
-                styleClass = "header";
-            } else if (matcher.group("HEADLINE") != null) {
-                styleClass = "headline";
-            } else if (matcher.group("USERFROM") != null) {
-                styleClass = "userfrom";
-            } else if (matcher.group("USERTO") != null) {
-                styleClass = "userto";
-            } else if (matcher.group("SDP") != null) {
-                styleClass = "sdp";
+            if (matcher.group(StyleClass.HEADER) != null) {
+                styleClass = StyleClass.HEADER;
+            } else if (matcher.group(StyleClass.HEAD_LINE) != null) {
+                styleClass = StyleClass.HEAD_LINE;
+            } else if (matcher.group(StyleClass.USER_FROM) != null) {
+                styleClass = StyleClass.USER_FROM;
+            } else if (matcher.group(StyleClass.USER_TO) != null) {
+                styleClass = StyleClass.USER_TO;
+            } else if (matcher.group(StyleClass.SDP) != null) {
+                styleClass = StyleClass.SDP;
             }
-            spansBuilder.add(Collections.singleton("default"), matcher.start() - lastKwEnd);
+            spansBuilder.add(Collections.singleton(StyleClass.DEFAULT), matcher.start() - lastKwEnd);
             spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
 
             lastKwEnd = matcher.end();
         }
-        spansBuilder.add(Collections.singleton("default"), text.length() - lastKwEnd);
+        spansBuilder.add(Collections.singleton(StyleClass.DEFAULT), text.length() - lastKwEnd);
 
         return spansBuilder.create();
     }
@@ -110,8 +119,8 @@ public class ClientFXMain extends Application {
     @Override
     public void init() throws Exception {
         client = FXWebSocketClient.getClient("wss://192.168.127.237:8443/csa/fxRemote")
-                                  .setUserName("dmsokol2")
-                                  .setUserPassword("RAPtor1234");
+                                  .setUserName("")
+                                  .setUserPassword("");
 
         FXMessenger.getInstance().setClient(client);
 
